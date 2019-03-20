@@ -1,28 +1,29 @@
 <template>
-  <div class="index">
-    我是首页
-    <button @click="loginout">退出登录</button>
-  </div>
+	<div class="index">
+		我是首页
+		<button @click="clearToken">退出登录</button>
+	</div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
-  name: 'Index',
-  data () {
-    return {
+	name: 'index',
+	data () {
+		return {
 
-    }
-  },
-  created(){
-      this.$axios.post("/sys/index/index",{"a":1}).then((res)=>{
-          console.log(res)
-      })
-  },
-  methods:{
-      loginout(){
-          window.localStorage.removeItem('x-sys-token');
-      }
-  }
+		}
+	},
+	created(){
+		this.$axios.post("/index/index").then((res)=>{
+			console.log(res)
+		})
+		
+	},
+	methods:{
+		...mapActions(['clearToken']),
+		
+	},
 }
 </script>
 

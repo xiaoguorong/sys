@@ -5,38 +5,47 @@ import App from './App'
 import router from './router'
 
 //引入axios
-import Axios from 'axios'
-Axios.defaults.baseURL = 'api/api';
-
-// 添加一个请求拦截器
-Axios.interceptors.request.use(function (config) {
-  let token = window.localStorage.getItem("x-sys-token");
-  if(token){
-    config.headers['x-sys-token'] = token;
-  }
-  return config;
-}, function (error) {
-  return Promise.reject(error);
-});
-
-// 添加一个响应拦截器
-Axios.interceptors.response.use(function (response) {
-  // Do something with response data
-  return response;
-}, function (error) {
-  // Do something with response error
-  return Promise.reject(error);
-});
-
-
+import Axios from './axios'
 Vue.prototype.$axios = Axios;
+
+//引入mint-ui
+import Mint from 'mint-ui'
+import 'mint-ui/lib/style.css' 
+Vue.use(Mint)
+
+//引入vuex
+import store from './store';
+
+//引入less
+import '@/less/util.less';
+import '@/less/reset.less';
+import '@/less/mint-ui.less';
+
+//引入全局组件
+import Icon from '@/components/x-icon'
+Vue.component("icon",Icon)
+
+//引入弹窗
+import { Toast } from 'mint-ui';
+//简化
+Vue.prototype.$toast = (msg,pos)=>{
+	return Toast({
+		message: msg,
+		position: pos
+	})
+};
+
+//引入loading
+import { Indicator } from 'mint-ui';
+Vue.prototype.$indicator = Indicator;
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+	el: '#app',
+	store,
+	router,
+	components: { App },
+	template: '<App/>'
 })
