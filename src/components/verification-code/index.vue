@@ -26,7 +26,7 @@ export default {
 			const postData = {
 				mobile:this.mobile
 			}
-			this.$axios.post("/user/getmobilecode",postData).then((res)=>{
+			this.$axios.post("/user/get_mobile_code",postData).then((res)=>{
 				if(res.code == 200){
 					this.$toast("验证码获取成功",'top');
 					let time = 200;

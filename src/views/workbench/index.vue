@@ -3,7 +3,7 @@
 	<div class="workbench">
 		<div class="header_exit pl2 pr2">
 			<span class="title fl fz18 fw6">工作台</span>
-			<span class="fr">退出</span>
+			<span class="fr fz14" @click="clearToken">退出</span>
 		</div>
 		<div class="report_form mt4 p2">
 			<p class="fz14">我的报表</p>
@@ -36,10 +36,42 @@
 		<div class="application p2">
 			<p class="fz14">我的应用</p>
 			<ul class="d-flex mt1">
-				<li class="mt1">
-					<icon name="iconzhidaoshu-" class="fz38 application_icon"></icon>
-					<p class="fw55">教材</p>
-				</li>
+				<router-link :to="{name:'teachingMaterial'}">
+					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
+						<icon name="iconzhidaoshu-" class="application_icon"></icon>
+						<p class="fw55 fz14">教材</p>
+					</li>
+				</router-link>
+				<router-link :to="{name:'teachingMaterial'}">
+					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
+						<icon name="iconzhidaoshu-" class="application_icon"></icon>
+						<p class="fw55 fz14">教材</p>
+					</li>
+				</router-link>
+				<router-link :to="{name:'teachingMaterial'}">
+					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
+						<icon name="iconzhidaoshu-" class="application_icon"></icon>
+						<p class="fw55 fz14">教材</p>
+					</li>
+				</router-link>
+				<router-link :to="{name:'teachingMaterial'}">
+					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
+						<icon name="iconzhidaoshu-" class="application_icon"></icon>
+						<p class="fw55 fz14">教材</p>
+					</li>
+				</router-link>
+				<router-link :to="{name:'teachingMaterial'}">
+					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
+						<icon name="iconzhidaoshu-" class="application_icon"></icon>
+						<p class="fw55 fz14">教材</p>
+					</li>
+				</router-link>
+				<router-link :to="{name:'teachingMaterial'}">
+					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
+						<icon name="iconzhidaoshu-" class="application_icon"></icon>
+						<p class="fw55 fz14">教材</p>
+					</li>
+				</router-link>
 			</ul>
 		</div>
 	</div>
@@ -47,12 +79,21 @@
 
 <script>
 import { mapActions } from 'vuex';
+import auth from '@/mixin/auth';
+
 export default {
 	name: 'workbench',
+	mixins: [auth],
 	data(){
 		return{
 			selected: 'tab-container1',
 		}
+	},
+	created(){
+		this.permission("/api/sys/teaching_material/teaching_material_index")
+	},
+	methods:{
+		...mapActions(['clearToken']),
 	}
 
 }
@@ -85,7 +126,7 @@ export default {
 .date_tab li{
 	flex-grow:1;
 	text-align: center;
-	line-height: 26px;
+	line-height: 30px;
 	color:#000;
 	background: #fff;
 }
@@ -112,14 +153,19 @@ export default {
 	flex-wrap:wrap;
 }
 .application li{
-	width:25%;
-	height:60px;
+	width:100%;
+	height:80px;
 	text-align: center;
 }
 .application li p:last-child{
-	line-height:25px;
+	line-height:26px;
 }
 .application_icon{
-	color:#0079fe
+	color:#0079fe;
+	font-size: 54px;
+}
+.application a{
+	display: block;
+	width:25%;
 }
 </style>

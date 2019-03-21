@@ -2,29 +2,7 @@
 <!-- 教材页面 -->
 	<div class="teaching_material_item">
 		<ul class="pl1 pr15 pt1">
-			<li class="mt1 d-flex">
-				<div class="pic"></div>
-				<div class="ml1 detail">
-					<p class="fw55">少儿启蒙</p>
-					<p>
-						<icon name="icondeng" class="icon_deng"></icon>
-						<span class="ml2 fw55">200次浏览</span>
-						<span class="fr">200人正在学</span>
-					</p>
-				</div>
-			</li>
-			<li class="mt1 d-flex">
-				<div class="pic"></div>
-				<div class="ml1 detail">
-					<p class="fw55">少儿启蒙</p>
-					<p>
-						<icon name="icondeng" class="icon_deng"></icon>
-						<span class="ml2 fw55">200次浏览</span>
-						<span class="fr">200人正在学</span>
-					</p>
-				</div>
-			</li>
-			<li class="mt1 d-flex">
+			<li class="mt1 d-flex" v-for="(item,index) in data" :key="index">
 				<div class="pic"></div>
 				<div class="ml1 detail">
 					<p class="fw55">少儿启蒙</p>
@@ -54,12 +32,24 @@ export default {
 	},
 	methods:{
 		getData(){
-			this.$axios.post('/teachingmaterial/teacher_book_index').then((res)=>{
-				this.data = res.content;
-				this.data.forEach((e)=>{
-					e.cover = 'http://admin.com' + e.cover;
+			const postData = {
+				class_id:this.$route.params.classId
+			}
+			if(this.$route.params.type == '1'){
+				this.$axios.post('/teaching_material/teacher_book',postData).then((res)=>{
+					this.data = res.content;
+					this.data.forEach((e)=>{
+						e.cover = 'http://admin.com' + e.cover;
+					})
 				})
-			})
+			}else{
+				this.$axios.post('/teaching_material/teaching_material',postData).then((res)=>{
+					this.data = res.content;
+					this.data.forEach((e)=>{
+						e.cover = 'http://admin.com' + e.cover;
+					})
+				})
+			}
 		}
 	},
 	computed: {

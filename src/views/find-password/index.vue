@@ -2,21 +2,21 @@
   <!-- 找回密码页面 -->
 	<div class="find_password">
 		<div class="pass_process">
-		<span :class="{'blue':process}">1.验证手机号码</span>
-		<icon name="iconiconfontjiantou" class="icon_jiantou"></icon>
-		<span :class="{'blue':!process}">2.设置新密码</span>
+			<span :class="{'blue':process}">1.验证手机号码</span>
+			<icon name="iconiconfontjiantou" class="icon_jiantou"></icon>
+			<span :class="{'blue':!process}">2.设置新密码</span>
 		</div>
 		<div class="info_box p2" v-if="process">
-		<div class="mobile">
-			<icon name="iconshouji" class="fz20 mobile_icon fl mt1"></icon>
-			<input type="tel" v-model="mobile" placeholder="请输入注册手机号" class="mobile_input fl">
-		</div>
-		<div class="code">
-			<icon name="iconmima" class="fz20 code_icon fl mt1"></icon>
-			<input type="text" v-model="code" placeholder="请输入短信验证码" class="code_input fl">
-			<verification-code class="code_box fr" :mobile="mobile"></verification-code>
-		</div>
-		<mt-button type="primary" size="large" @click.native="next" class="mt3">下一步</mt-button>
+			<div class="mobile">
+				<icon name="iconshouji" class="fz20 mobile_icon fl mt1"></icon>
+				<input type="tel" v-model="mobile" placeholder="请输入注册手机号" class="mobile_input fl">
+			</div>
+			<div class="code">
+				<icon name="iconmima" class="fz20 code_icon fl mt1"></icon>
+				<input type="text" v-model="code" placeholder="请输入短信验证码" class="code_input fl">
+				<verification-code class="code_box fr" :mobile="mobile"></verification-code>
+			</div>
+			<mt-button type="primary" size="large" @click.native="next" class="mt3">下一步</mt-button>
 		</div>
 		<div class="info_box p2" v-else>
 		<div class="password">
@@ -62,6 +62,11 @@ export default {
 				this.$toast("手机号码不能为空", "top");
 				return;
 			}
+			var mobilereg=/^[1][3,4,5,7,8][0-9]{9}$/;
+            if (!mobilereg.test(this.mobile)) {
+				this.$toast("手机号码格式不正确", "top");
+                return;
+            }
 			if (!this.code) {
 				this.$toast("验证码不能为空", "top");
 				return;
@@ -70,7 +75,7 @@ export default {
 				mobile: this.mobile,
 				code: this.code
 			};
-			this.$axios.post("/user/checkmobilecode", postData).then(res => {
+			this.$axios.post("/user/check_mobile_code", postData).then(res => {
 				if (res.code == 200) {
 					this.$toast("验证成功", "top");
 					this.process = false;
@@ -98,7 +103,7 @@ export default {
 				mobile: this.mobile,
 				password: this.password
 			};
-			this.$axios.post("/user/changepassword", postData).then(res => {
+			this.$axios.post("/user/change_password", postData).then(res => {
 				if (res.code == 200) {
 					this.$toast("密码修改成功", "top");
 					this.process = false;
@@ -126,7 +131,7 @@ export default {
 }
 .icon_jiantou {
 	font-size: 36px;
-	color: #999;
+	color: #efefef;
 }
 .login {
   	padding-top: 60px;
@@ -168,6 +173,9 @@ export default {
 .code_box {
 	margin-top: 6.5px;
 	margin-right: 6.5px;
+}
+.pass_process span{
+	font-size: 14px;
 }
 .pass_process .blue {
   	color: #56a5e8;

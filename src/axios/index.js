@@ -38,6 +38,9 @@ Axios.interceptors.response.use(function (response) {
 			router.push({ name: 'login' })
 		}
 	}
+	if(response.data.token_info && response.data.token_info.sys_refresh_token == 1){
+		store.dispatch('setToken',response.data.token_info.sys_token);
+	}
 	return response.data;
 }, function (error) {
   	return Promise.reject(error);

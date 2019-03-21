@@ -28,14 +28,19 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions(["setToken", "setCamId"]),
+		...mapActions(["setToken", "setCamId","setAuthList","setAuthApi"]),
 		login() {
 			if (!this.mobile) {
-				this.$toast("请输入手机号", "top");
+				this.$toast("手机号码不能为空", "top");
 				return;
 			}
+			var mobilereg=/^[1][3,4,5,7,8][0-9]{9}$/;
+            if (!mobilereg.test(this.mobile)) {
+				this.$toast("手机号码格式不正确", "top");
+                return;
+            }
 			if (!this.password){
-				this.$toast("请输入密码", "top");
+				this.$toast("登录密码不能为空", "top");
 				return;
 			}
 			let postData = {
@@ -45,18 +50,26 @@ export default {
 			this.$axios.post("/user/login", postData).then(res => {
 				if (res.code == 200) {
 					this.$toast("登录成功", "top");
-					let token = res.user_info.sys_token;
+					let token = res.token_info.sys_token;
 					this.setToken(token);
-					let sys_refresh_token = res.user_info.sys_refresh_token;
-					let campus_is_admin = res.user_info.campus_is_admin;
-					let campus_num = res.user_info.campus_num;
+					let sys_refresh_token = res.token_info.sys_refresh_token;
+					let campus_is_admin = res.token_info.campus_is_admin;
+					let campus_num = res.token_info.campus_num;
 					window.localStorage.setItem("sys-refresh-token", sys_refresh_token);
 					window.localStorage.setItem("sys-campus-is-admin", campus_is_admin);
 					window.localStorage.setItem("sys-campus-num", campus_num);
-					if (res.user_info.camid) {
-						let camid = res.user_info.camid;
+					if (res.token_info.camid) {
+						let camid = res.token_info.camid;
 						this.setCamId(camid);
 					}
+					//获取权限
+					this.$axios.post("/member/get_member_auth").then((res)=>{
+						this.setAuthList(res.content.auth_ids)
+					})
+					//获取权限表
+					this.$axios.post("/campus/get_menu_campus_api").then((res)=>{
+						this.setAuthApi(JSON.stringify(res.content))
+					})
 					this.$router.push({ name: "index" });
 				}
 			});

@@ -38,6 +38,7 @@ var router = new Router({
 						header: {
 							pageTitle: '找回密码'
 						},
+						noLoginRequired: true
 					},
 					component: ()=>import('@/views/find-password')
 				},
@@ -63,9 +64,9 @@ var router = new Router({
 			path: '',
 			component: ()=>import('@/views/layout/x-header-return'),
 			children: [
-				{//教材 cid:分类id
+				{//教材 classId:分类id type:教师用书还是教材 
 					name: 'teachingMaterialItem',
-					path: '/teachingMaterial/item/:cid',
+					path: '/teachingMaterial/item/:classId/:type',
 					meta: {
 						header: {
 							pageTitle: '教材'
@@ -73,9 +74,9 @@ var router = new Router({
 					},
 					component: ()=>import('@/views/teaching-material/item')
 				},
-				{//教材 cid:分类id id:具体id
+				{//教材 classId:分类id id:具体id
 					name: 'teachingMaterialDetail',
-					path: '/teachingMaterial/detail/:cid/:id',
+					path: '/teachingMaterial/detail/:classId/:id',
 					meta: {
 						header: {
 							pageTitle: '教材'
@@ -109,7 +110,7 @@ router.beforeEach((to, from, next) => {
       	store.dispatch("setHeaderName",to.meta.header.pageTitle)
     }
     //本地判断
-    // 判断该路由是否需要登录权限
+	// 判断该路由是否需要登录权限
     if (!to.matched.some(record => record.meta && record.meta.noLoginRequired)){
 		const token = window.localStorage.getItem('sys-token');
 		//localStorage有token则视为登录

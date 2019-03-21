@@ -8,9 +8,11 @@
 			</mt-navbar>
 		</div>
 		<ul class="teaching_material_list">
-			<li class="fl" v-for="(item,index) in data" :key="index" :style="{backgroundImage:'url('+item.cover+')'}">
-				<div class="line" v-if="index%3 == 0"></div>
-			</li>
+			<router-link :to="{name:'teachingMaterialItem',params:{classId:item.id,type:selected}}" v-for="(item,index) in data" :key="index">
+				<li class="fl" :style="{backgroundImage:'url('+item.cover+')'}">
+					<div class="line" v-if="index%3 == 0"></div>
+				</li>
+			</router-link>
 		</ul>
 	</div>
 </template>
@@ -25,12 +27,30 @@ export default {
 			data:[]
 		}
 	},
+	watch:{
+		selected(val){
+			console.log(val)
+			if(val == '1'){
+				this.getBook();
+			}else{
+				this.getMaterial();
+			}
+		}
+	},
 	created(){
-		this.getData();
+		this.getBook();
 	},
 	methods:{
-		getData(){
-			this.$axios.post('/teachingmaterial/teacher_book_index').then((res)=>{
+		getMaterial(){
+			this.$axios.post('/teaching_material/teaching_material_class').then((res)=>{
+				this.data = res.content;
+				this.data.forEach((e)=>{
+					e.cover = 'http://admin.com' + e.cover;
+				})
+			})
+		},
+		getBook(){
+			this.$axios.post('/teaching_material/teacher_book_class').then((res)=>{
 				this.data = res.content;
 				this.data.forEach((e)=>{
 					e.cover = 'http://admin.com' + e.cover;
