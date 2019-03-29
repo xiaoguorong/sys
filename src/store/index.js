@@ -26,10 +26,8 @@ const actions = {
         window.localStorage.setItem('sys-token', token);
         commit('login', token);
     },
-    clearToken({commit, state}) {
-        window.localStorage.removeItem('sys-token');
-        window.localStorage.removeItem('sys-orgid');
-        window.localStorage.removeItem('sys-camid');
+    clearLocalstroage({commit, state}) {
+        window.localStorage.clear();
         commit('logout');
     },
     setOrgId({dispatch, commit, state}, orgid) {
@@ -62,6 +60,10 @@ const mutations = {
         state.token = '';
         state.orgId = '';
         state.camId = '';
+        state.isAdmin = '';
+        state.campusNum = '';
+        state.authList = '';
+        state.authApi = '';
     },
     updateHeaderName(state, headerName){
         state.headerName = headerName;

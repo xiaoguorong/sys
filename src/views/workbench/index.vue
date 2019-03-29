@@ -3,14 +3,14 @@
 	<div class="workbench">
 		<div class="header_exit pl2 pr2">
 			<span class="title fl fz18 fw6">工作台</span>
-			<span class="fr fz14" @click="clearToken">退出</span>
+			<span class="fr fz14" @click="clearLocalstroage">退出</span>
 		</div>
 		<div class="report_form mt4 p2">
 			<p class="fz14">我的报表</p>
 			<ul class="date_tab d-flex fz14 mt1">
-				<li class="active">今天</li>
-				<li>本周</li>
-				<li>本月</li>
+				<li :class="{'active' : selectCycle == 1}" @click="selectCycle = 1">今天</li>
+				<li :class="{'active' : selectCycle == 2}" @click="selectCycle = 2">本周</li>
+				<li :class="{'active' : selectCycle == 3}" @click="selectCycle = 3">本月</li>
 			</ul>
 			<ul class="crm_data d-flex mt2">
 				<li>
@@ -19,17 +19,17 @@
 				</li>
 				<li>
 					<p>1人</p>
-					<p>招生录入</p>
+					<p>招生报名</p>
 				</li>
 			</ul>
 			<ul class="crm_data d-flex mt2">
 				<li>
 					<p>1人</p>
-					<p>招生录入</p>
+					<p>教师总课次</p>
 				</li>
 				<li>
 					<p>1人</p>
-					<p>招生录入</p>
+					<p>消耗教师课次</p>
 				</li>
 			</ul>
 		</div>
@@ -37,37 +37,7 @@
 			<p class="fz14">我的应用</p>
 			<ul class="d-flex mt1">
 				<router-link :to="{name:'teachingMaterial'}">
-					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
-						<icon name="iconzhidaoshu-" class="application_icon"></icon>
-						<p class="fw55 fz14">教材</p>
-					</li>
-				</router-link>
-				<router-link :to="{name:'teachingMaterial'}">
-					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
-						<icon name="iconzhidaoshu-" class="application_icon"></icon>
-						<p class="fw55 fz14">教材</p>
-					</li>
-				</router-link>
-				<router-link :to="{name:'teachingMaterial'}">
-					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
-						<icon name="iconzhidaoshu-" class="application_icon"></icon>
-						<p class="fw55 fz14">教材</p>
-					</li>
-				</router-link>
-				<router-link :to="{name:'teachingMaterial'}">
-					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
-						<icon name="iconzhidaoshu-" class="application_icon"></icon>
-						<p class="fw55 fz14">教材</p>
-					</li>
-				</router-link>
-				<router-link :to="{name:'teachingMaterial'}">
-					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
-						<icon name="iconzhidaoshu-" class="application_icon"></icon>
-						<p class="fw55 fz14">教材</p>
-					</li>
-				</router-link>
-				<router-link :to="{name:'teachingMaterial'}">
-					<li class="mt1" v-if="permission('/api/sys/teaching_material/teaching_material')">
+					<li class="mt1" v-if="permission('/teaching_material/teaching_material_class')">
 						<icon name="iconzhidaoshu-" class="application_icon"></icon>
 						<p class="fw55 fz14">教材</p>
 					</li>
@@ -86,14 +56,19 @@ export default {
 	mixins: [auth],
 	data(){
 		return{
-			selected: 'tab-container1',
+			selectCycle:1,//1：今天 2：本周 3：本月
 		}
 	},
 	created(){
-		this.permission("/api/sys/teaching_material/teaching_material_index")
+		this.getDataReport();
 	},
 	methods:{
-		...mapActions(['clearToken']),
+		...mapActions(['clearLocalstroage']),
+		getDataReport(){
+			this.$axios.post("/campus/data_report").then((res)=>{
+				console.log(res)
+			})
+		}
 	}
 
 }

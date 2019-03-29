@@ -9,8 +9,6 @@ export default {
     methods: {
         permission(pmsion) {
             let auth_api_id = JSON.parse(this.authApi)[pmsion];
-            console.log(this.authList.split(','))
-            console.log(auth_api_id)
             let auth_id = this.authList.split(',').findIndex((val,index) => {
                 if(val == auth_api_id){
                     return true;

@@ -28,7 +28,7 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions(["setToken", "setCamId","setAuthList","setAuthApi"]),
+		...mapActions(["setToken", "setCamId","setAuthList","setAuthApi","setOrgId"]),
 		login() {
 			if (!this.mobile) {
 				this.$toast("手机号码不能为空", "top");
@@ -60,7 +60,9 @@ export default {
 					window.localStorage.setItem("sys-campus-num", campus_num);
 					if (res.token_info.camid) {
 						let camid = res.token_info.camid;
+						let orgid = res.token_info.orgid;
 						this.setCamId(camid);
+						this.setOrgId(orgid);
 					}
 					//获取权限
 					this.$axios.post("/member/get_member_auth").then((res)=>{

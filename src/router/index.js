@@ -10,23 +10,11 @@ var router = new Router({
 			path: '',
 			component: ()=>import('@/views/layout/x-header'),
 			children: [
-				{//首页
-					name: 'index',
-					path: '/',
-					meta: {
-						header: {
-							pageTitle: '首页'
-						},
-					},
-					component: ()=>import('@/views/index')
-				},
 				{//登录
 					name: 'login',
 					path: '/login',
 					meta: {
-						header: {
-							pageTitle: '登录'
-						},
+						pageTitle: '登录',
 						noLoginRequired: true
 					},
 					component: ()=>import('@/views/login')
@@ -35,9 +23,7 @@ var router = new Router({
 					name: 'findPassword',
 					path: '/findPassword',
 					meta: {
-						header: {
-							pageTitle: '找回密码'
-						},
+						pageTitle: '找回密码',
 						noLoginRequired: true
 					},
 					component: ()=>import('@/views/find-password')
@@ -46,68 +32,78 @@ var router = new Router({
 		},
 		{
 			path: '',
-			component: ()=>import('@/views/layout/x-header-search'),
-			children: [
-				{//教材
-					name: 'teachingMaterial',
-					path: '/teachingMaterial',
-					meta: {
-						header: {
-							pageTitle: '教材'
+			component: ()=>import('@/views/layout/x-footer'),
+			children: [{
+				path: '',
+				component: ()=>import('@/views/layout/x-header'),
+				children: [
+					{//首页
+						name: 'index',
+						path: '/',
+						meta: {
+							pageTitle: '首页',
+							tabBar:'1'
 						},
-					},
-					component: ()=>import('@/views/teaching-material')
-				},
-			]
-		},
-		{
-			path: '',
-			component: ()=>import('@/views/layout/x-header-return'),
-			children: [
-				{//教材 classId:分类id type:教师用书还是教材 
-					name: 'teachingMaterialItem',
-					path: '/teachingMaterial/item/:classId/:type',
-					meta: {
-						header: {
-							pageTitle: '教材'
-						},
-					},
-					component: ()=>import('@/views/teaching-material/item')
-				},
-				{//教材 classId:分类id id:具体id
-					name: 'teachingMaterialDetail',
-					path: '/teachingMaterial/detail/:classId/:id',
-					meta: {
-						header: {
-							pageTitle: '教材'
-						},
-					},
-					component: ()=>import('@/views/teaching-material/detail')
-				},
-			]
-		},
-		{
-			name: 'workbench',
-			path: '/workbench',
-			meta: {
-				header: {
-					pageTitle: '工作台'
-				},
+						component: ()=>import('@/views/index')
+					}
+				]
 			},
-			component: ()=>import('@/views/workbench')
-		}
+			{
+				path: '',
+				component: ()=>import('@/views/layout/x-header-search'),
+				children: [
+					{//教材分类
+						name: 'teachingMaterial',
+						path: '/teachingMaterial',
+						meta: {
+							pageTitle: '教材',
+							tabBar:'2'
+						},
+						component: ()=>import('@/views/teaching-material')
+					},
+				]
+			},
+			{
+				path: '',
+				component: ()=>import('@/views/layout/x-header-return'),
+				children: [
+					{//教材 classId:分类id name:教材分类名称 type:教师用书还是教材 
+						name: 'teachingMaterialItem',
+						path: '/teachingMaterial/item/:classId/:name/:type',
+						meta: {
+							pageTitle: '教材',
+							tabBar:'2'
+						},
+						component: ()=>import('@/views/teaching-material/item')
+					},
+					{//教材 key:七牛key name:教材名字 title:七牛title
+						name: 'teachingMaterialDetail',
+						path: '/teachingMaterial/detail/:name/:key/:title',
+						meta: {
+							pageTitle: '教材',
+							tabBar:2
+						},
+						component: ()=>import('@/views/teaching-material/detail')
+					},
+				]
+			},
+			{
+				name: 'workbench',
+				path: '/workbench',
+				meta: {
+					pageTitle: '工作台',
+					tabBar:'2'
+				},
+				component: ()=>import('@/views/workbench')
+			}
+		]}
     ]
 })
 
 router.beforeEach((to, from, next) => {
     //更新机构id
-    console.log(to)
-    if (to.query.orgid) {
-		console.log(`更新机构id>>${to.query.orgid}`);
-		store.dispatch("setOrgId",to.query.orgid)
-    }
-    if(to.meta.header && to.meta.header.pageTitle){
-      	store.dispatch("setHeaderName",to.meta.header.pageTitle)
+    if(to.meta && to.meta.pageTitle){
+      	store.dispatch("setHeaderName",to.meta.pageTitle)
     }
     //本地判断
 	// 判断该路由是否需要登录权限

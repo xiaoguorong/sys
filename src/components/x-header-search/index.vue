@@ -12,6 +12,11 @@
 import { mapState } from "vuex";
 export default {
 	name: "x-header-search",
+	data(){
+		return{
+			value:''
+		}
+	},
 	computed: {
 		...mapState({
 			headerName: state => state.headerName
@@ -34,5 +39,11 @@ export default {
 .header_search .icon_search{
 	margin-top:8px;
 	color:#0079fe;
+}
+.search{
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
 }
 </style>

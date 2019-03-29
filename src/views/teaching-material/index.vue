@@ -8,7 +8,7 @@
 			</mt-navbar>
 		</div>
 		<ul class="teaching_material_list">
-			<router-link :to="{name:'teachingMaterialItem',params:{classId:item.id,type:selected}}" v-for="(item,index) in data" :key="index">
+			<router-link :to="{name:'teachingMaterialItem',params:{classId:item.id,name:item.name,type:selected}}" v-for="(item,index) in data" :key="index">
 				<li class="fl" :style="{backgroundImage:'url('+item.cover+')'}">
 					<div class="line" v-if="index%3 == 0"></div>
 				</li>

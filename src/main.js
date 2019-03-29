@@ -23,7 +23,9 @@ import '@/less/mint-ui.less';
 
 //引入全局组件
 import Icon from '@/components/x-icon'
+import Footer from '@/components/x-footer'
 Vue.component("icon",Icon)
+Vue.component("xFooter",Footer)
 
 //引入弹窗
 import { Toast } from 'mint-ui';
